@@ -11,15 +11,41 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "@tanstack/react-router";
+
+type LoginFormData = {
+  email: string;
+  password: string;
+};
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>();
+
+  const navigate = useNavigate();
+
+  const onSubmit = (data: LoginFormData) => {
+    console.log(data);
+
+    // loginMutation.mutate(data)
+
+    navigate({
+      to: "/dashboard",
+    });
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -29,21 +55,33 @@ export function LoginForm({
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
+
                 <Input
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^\S+@\S+\.\S+$/,
+                      message: "Please enter a valid email",
+                    },
+                  })}
                 />
+
+                <FieldError errors={[errors.email]} />
               </Field>
+
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
+
                   <a
                     href="#"
                     className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
@@ -51,13 +89,25 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+
+                <Input
+                  id="password"
+                  type="password"
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
+                />
+
+                <FieldError errors={[errors.password]} />
               </Field>
+
               <Field>
                 <Button type="submit">Login</Button>
+
                 <Button variant="outline" type="button">
                   Login with Google
                 </Button>
+
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <Link to="/signup">Sign up</Link>
                 </FieldDescription>
