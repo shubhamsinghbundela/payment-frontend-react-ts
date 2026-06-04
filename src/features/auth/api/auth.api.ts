@@ -12,3 +12,28 @@ export const signupUser = async (data: SignupPayload) => {
 
   return response.data;
 };
+
+export type LoginPayload = {
+  email: string;
+  password: string;
+};
+
+export type LoginResponse = {
+  success: boolean;
+  message: string;
+  data: {
+    accessToken: string;
+    user: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+    };
+  };
+};
+
+export const loginUser = async (data: LoginPayload): Promise<LoginResponse> => {
+  const response = await api.post<LoginResponse>("/v1/user/signin", data);
+
+  return response.data;
+};
