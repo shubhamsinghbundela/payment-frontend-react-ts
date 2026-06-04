@@ -1,13 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { LoginForm } from "@/components/login-form";
 
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: LoginPage,
 });
 
-function Index() {
+function LoginPage() {
   return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="w-full max-w-md">
+        <LoginForm />
+      </div>
     </div>
   );
 }
