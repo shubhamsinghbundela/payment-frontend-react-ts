@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "@tanstack/react-router";
+import { useSignupMutation } from "@/features/auth/hooks/useSignupMutation";
 
 type SignupFormData = {
   firstName: string;
@@ -33,15 +34,15 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   } = useForm<SignupFormData>();
 
   const navigate = useNavigate();
+  const signupMutation = useSignupMutation();
 
   const onSubmit = (data: SignupFormData) => {
-    console.log(data);
-
-    // TODO:
-    // signupMutation.mutate(data)
-
-    navigate({
-      to: "/",
+    signupMutation.mutate(data, {
+      onSuccess: () => {
+        navigate({
+          to: "/",
+        });
+      },
     });
   };
 
@@ -134,7 +135,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             </Field>
 
             <Field>
-              <Button type="submit">Create Account</Button>
+              <Button type="submit" disabled={signupMutation.isPending}>
+                {signupMutation.isPending ? "Creating..." : "Create Account"}
+              </Button>
 
               <Button variant="outline" type="button">
                 Sign up with Google
