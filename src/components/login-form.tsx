@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "@tanstack/react-router";
 import { setAccessToken } from "@/utils/token";
 import { useLoginMutation } from "@/features/auth/hooks/useLoginMutation";
-import { useUserStore } from "@/store/useStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 type LoginFormData = {
   email: string;
@@ -41,24 +41,17 @@ export function LoginForm({
 
   const loginMutation = useLoginMutation();
 
-  const setUser = useUserStore((state) => state.setUser);
+  const queryClient = useQueryClient();
 
   const onSubmit = (data: LoginFormData) => {
     loginMutation.mutate(data, {
-      onSuccess: (response) => {
-        const { accessToken, user } = response.data;
+      onSuccess: async (res) => {
+        setAccessToken(res.data.accessToken);
 
-        setAccessToken(accessToken);
+        // 🔥 IMPORTANT FIX
+        await queryClient.invalidateQueries({ queryKey: ["me"] });
 
-        setUser(user);
-
-        navigate({
-          to: "/dashboard",
-        });
-      },
-
-      onError: (error) => {
-        console.error(error);
+        navigate({ to: "/dashboard", replace: true });
       },
     });
   };

@@ -37,3 +37,11 @@ export const loginUser = async (data: LoginPayload): Promise<LoginResponse> => {
 
   return response.data;
 };
+
+// auth.api.ts
+
+export const getMe = async () => {
+  const response = await api.get("/v1/user/getme");
+
+  return response.data.data.user;
+};
