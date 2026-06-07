@@ -1,4 +1,6 @@
-import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: ({ context }) => {
@@ -8,5 +10,20 @@ export const Route = createFileRoute("/_authenticated")({
       });
     }
   },
-  component: () => <Outlet />,
+  component: AuthenticatedLayout,
 });
+
+function AuthenticatedLayout() {
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+
+      <main className="flex-1">
+        <SidebarTrigger />
+
+        {/* Child routes render here */}
+        <Outlet />
+      </main>
+    </SidebarProvider>
+  );
+}

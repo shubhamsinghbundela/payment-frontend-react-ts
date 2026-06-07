@@ -12,7 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/Dashboard'
+import { Route as AuthenticatedCheckBalanceRouteImport } from './routes/_authenticated/CheckBalance'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -29,39 +30,49 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+  id: '/Dashboard',
+  path: '/Dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedCheckBalanceRoute =
+  AuthenticatedCheckBalanceRouteImport.update({
+    id: '/CheckBalance',
+    path: '/CheckBalance',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/signup': typeof SignupRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/CheckBalance': typeof AuthenticatedCheckBalanceRoute
+  '/Dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/signup': typeof SignupRoute
-  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/CheckBalance': typeof AuthenticatedCheckBalanceRoute
+  '/Dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/signup': typeof SignupRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/CheckBalance': typeof AuthenticatedCheckBalanceRoute
+  '/_authenticated/Dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/signup' | '/dashboard'
+  fullPaths: '/' | '/signup' | '/CheckBalance' | '/Dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/signup' | '/dashboard'
+  to: '/' | '/signup' | '/CheckBalance' | '/Dashboard'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/signup'
-    | '/_authenticated/dashboard'
+    | '/_authenticated/CheckBalance'
+    | '/_authenticated/Dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,21 +104,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
+    '/_authenticated/Dashboard': {
+      id: '/_authenticated/Dashboard'
+      path: '/Dashboard'
+      fullPath: '/Dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/CheckBalance': {
+      id: '/_authenticated/CheckBalance'
+      path: '/CheckBalance'
+      fullPath: '/CheckBalance'
+      preLoaderRoute: typeof AuthenticatedCheckBalanceRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedCheckBalanceRoute: typeof AuthenticatedCheckBalanceRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedCheckBalanceRoute: AuthenticatedCheckBalanceRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
 }
 

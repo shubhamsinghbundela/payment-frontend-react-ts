@@ -1,21 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
-  component: Dashboard,
+export const Route = createFileRoute("/_authenticated/Dashboard")({
+  component: DashboardPage,
 });
 
-function Dashboard() {
-  const { auth } = Route.useRouteContext();
-
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-
-      <p className="mt-4">
-        Welcome {auth.user?.firstName} {auth.user?.lastName}
-      </p>
-
-      <p>{auth.user?.email}</p>
-    </div>
-  );
+function DashboardPage() {
+  return <div>Dashboard Page</div>;
 }
