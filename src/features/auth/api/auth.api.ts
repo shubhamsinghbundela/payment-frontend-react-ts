@@ -50,3 +50,9 @@ export const logout = async () => {
   const res = await api.post("/v1/user/logout");
   return res.data;
 };
+
+export const getAllUsers = async () => {
+  const response = await api.get("/v1/user/getAllUsers");
+
+  return response.data.data.users;
+};
