@@ -7,6 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Eye, EyeOff, Loader2, Lock, Clock } from "lucide-react";
 import { useRouter } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { checkBalance } from "@/features/transferMoney/api/account.api";
 
 type User = {
   firstName: string;
@@ -19,12 +21,15 @@ export default function CheckBalance() {
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleReveal = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setVisible(true);
-    }, 900);
+  const { data, isFetching, refetch } = useQuery({
+    queryKey: ["balance"],
+    queryFn: checkBalance,
+    enabled: false, // don't fetch on mount
+  });
+
+  const handleReveal = async () => {
+    await refetch();
+    setVisible(true);
   };
 
   const handleHide = () => {
@@ -69,12 +74,12 @@ export default function CheckBalance() {
               <Button
                 className="w-full"
                 onClick={handleReveal}
-                disabled={loading}
+                disabled={isFetching}
               >
-                {loading ? (
+                {isFetching ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Checking…
+                    Checking...
                   </>
                 ) : (
                   <>
@@ -90,13 +95,7 @@ export default function CheckBalance() {
           {visible && (
             <div className="text-center animate-in fade-in slide-in-from-bottom-1 duration-300">
               <div className="text-4xl font-medium tracking-tight text-foreground mb-1">
-                <span className="text-xl font-normal text-muted-foreground align-super mr-0.5">
-                  $
-                </span>
-                12,480
-                <span className="text-xl font-normal text-muted-foreground">
-                  .50
-                </span>
+                ₹ {data?.balance?.toLocaleString()}
               </div>
               <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground mb-6">
                 <Clock className="h-3 w-3" />
