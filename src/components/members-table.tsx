@@ -51,37 +51,44 @@ export function MembersTable() {
             </thead>
 
             <tbody>
-              {users.map((user) => (
-                <tr
-                  key={user._id}
-                  className="border-b transition-colors hover:bg-muted/50"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-9 w-9">
-                        <AvatarFallback>
-                          {`${user.firstName[0]}${user.lastName[0]}`}
-                        </AvatarFallback>
-                      </Avatar>
+              {users.map(
+                (user: {
+                  _id: string;
+                  firstName: string;
+                  lastName: string;
+                  email: string;
+                }) => (
+                  <tr
+                    key={user._id}
+                    className="border-b transition-colors hover:bg-muted/50"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9">
+                          <AvatarFallback>
+                            {`${user.firstName[0]}${user.lastName[0]}`}
+                          </AvatarFallback>
+                        </Avatar>
 
-                      <span className="font-medium">
-                        {user.firstName} {user.lastName}
-                      </span>
-                    </div>
-                  </td>
+                        <span className="font-medium">
+                          {user.firstName} {user.lastName}
+                        </span>
+                      </div>
+                    </td>
 
-                  <td className="px-6 py-4 text-muted-foreground">
-                    {user.email}
-                  </td>
+                    <td className="px-6 py-4 text-muted-foreground">
+                      {user.email}
+                    </td>
 
-                  <td className="px-6 py-4 text-right">
-                    <Button variant="outline" size="sm">
-                      <CreditCard className="mr-2 h-4 w-4" />
-                      Pay
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+                    <td className="px-6 py-4 text-right">
+                      <Button variant="outline" size="sm">
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Pay
+                      </Button>
+                    </td>
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         </div>
