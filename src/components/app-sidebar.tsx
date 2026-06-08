@@ -11,12 +11,22 @@ import {
 import { NavUser } from "@/components/nav-user";
 import { IconChartBar, IconDashboard } from "@tabler/icons-react";
 import { NavMain } from "@/components/nav-main";
+import { useRouter } from "@tanstack/react-router";
+
+type User = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 
 export function AppSidebar() {
+  const router = useRouter();
+  const user: User | null = router?.options?.context?.auth?.user ?? null;
   const data = {
     user: {
-      name: "shadcn",
-      email: "m@example.com",
+      name:
+        `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim() || "Guest",
+      email: user?.email ?? "m@example.com",
       avatar: "/avatars/shadcn.jpg",
     },
     navMain: [
