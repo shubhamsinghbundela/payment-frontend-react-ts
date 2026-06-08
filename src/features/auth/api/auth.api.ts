@@ -45,3 +45,8 @@ export const getMe = async () => {
 
   return response.data.data.user;
 };
+
+export const logout = async () => {
+  const res = await api.post("/v1/user/logout");
+  return res.data;
+};

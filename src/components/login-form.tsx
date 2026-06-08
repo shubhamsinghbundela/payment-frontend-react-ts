@@ -51,7 +51,7 @@ export function LoginForm({
         // 🔥 IMPORTANT FIX
         await queryClient.invalidateQueries({ queryKey: ["me"] });
 
-        navigate({ to: "/dashboard", replace: true });
+        navigate({ to: "/Dashboard", replace: true });
       },
     });
   };

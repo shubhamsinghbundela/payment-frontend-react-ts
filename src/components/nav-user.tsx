@@ -16,11 +16,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLogout } from "@/features/auth/hooks/useLogoutMutation";
 import {
   IconDotsVertical,
   IconLogout,
   IconUserCircle,
 } from "@tabler/icons-react";
+import { useNavigate } from "@tanstack/react-router";
 
 export function NavUser({
   user,
@@ -32,6 +34,16 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
+  const logoutMutation = useLogout();
+
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: async () => {
+        navigate({ to: "/", replace: true });
+      },
+    });
+  };
 
   return (
     <SidebarMenu>
@@ -83,7 +95,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <IconLogout />
               Log out
             </DropdownMenuItem>
