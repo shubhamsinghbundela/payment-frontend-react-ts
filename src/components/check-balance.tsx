@@ -19,7 +19,6 @@ export default function CheckBalance() {
   const router = useRouter();
   const user: User | null = router?.options?.context?.auth?.user ?? null;
   const [visible, setVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["balance"],
