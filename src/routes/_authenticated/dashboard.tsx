@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_authenticated/Dashboard")({
 
 function DashboardPage() {
   return (
-    <div className="container mx-auto p-6">
+    <div className="h-[calc(100vh-5rem)] p-6">
       <MembersTable />
     </div>
   );
